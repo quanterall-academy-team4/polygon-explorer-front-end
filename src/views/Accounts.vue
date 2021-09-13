@@ -1,6 +1,6 @@
 <template>
-  <h1>Accounts page</h1>
   <Footer />
+  
 </template>
 
 <script>

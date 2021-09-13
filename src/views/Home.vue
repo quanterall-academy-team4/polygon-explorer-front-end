@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <img class="center" src="../assets/logo.png">
   </div>
   <Footer />
 </template>
@@ -15,3 +15,12 @@ export default {
   }
 }
 </script>
+
+<style>
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+</style>

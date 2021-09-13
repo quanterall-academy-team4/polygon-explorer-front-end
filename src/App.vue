@@ -66,6 +66,11 @@
 </template>
 
 <style>
+
+html,body {
+    margin:0;
+    padding:0;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -81,9 +86,11 @@ body {
 }
 
 .topnav {
-  overflow: hidden;
+  overflow: auto;
   background-color: purple;
-  width: 100%;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
 }
 
 .topnav router-link {
