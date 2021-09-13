@@ -1,12 +1,17 @@
 <template>
-  <h1>Accounts</h1>
+  <h1>Accounts page</h1>
+  <Footer />
 </template>
 
 <script>
+import Footer from "../components/Footer.vue";
+
 export default {
   name: 'Accounts',
-  components: {}
-}
+  components: {
+    Footer,
+  }
+};
 </script>
 
 <style>

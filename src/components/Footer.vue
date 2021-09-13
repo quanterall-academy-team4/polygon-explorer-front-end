@@ -18,18 +18,10 @@ export default {
 .footer {
   overflow: hidden;
   background-color: purple;
-  margin-top: 100px;
-  size: 100ex;
-}
-
-.footer a {
-  margin-bottom: 0px;
-  float: inline-start;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  position: absolute;
 }
 
 .footer img {
