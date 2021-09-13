@@ -1,9 +1,68 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div class="topnav">
+    <router-link
+      style="
+        color: white;
+        float: right;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+      "
+      to="/transactions"
+      >Transcations</router-link
+    >
+    <router-link
+      style="
+        color: white;
+        float: right;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+      "
+      to="/accounts"
+      >Accounts</router-link
+    >
+    <router-link
+      style="
+        color: white;
+        float: right;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+      "
+      to="/blocks"
+      >Blocks</router-link
+    >
+    <router-link
+      style="
+        color: white;
+        float: right;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+      "
+      to="/about"
+      >About</router-link
+    >
+
+    <router-link
+      style="
+        color: white;
+        float: right;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+      "
+      to="/"
+      >Home</router-link
+    >
   </div>
-  <router-view/>
+  <router-view />
 </template>
 
 <style>
@@ -15,16 +74,57 @@
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.topnav {
+  overflow: hidden;
+  background-color: purple;
+  width: 100%;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.topnav router-link {
+  margin-top: 10px;
+  float: right;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav router-link:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav router-link.active {
+  background-color: #04aa6d;
+  color: white;
+}
+
+.topnav h1 {
+  float: left;
+  margin-bottom: 5px;
+  color: #ffff;
+}
+
+.topnav img {
+  float: left;
+  margin: 0;
+  margin-left: 10px;
+  height: 46px;
+  width: 128px;
+}
+
+#test1 {
+  float: left;
+  margin: 0;
+  margin-left: 10px;
+  height: 46px;
+  width: 128px;
 }
 </style>
