@@ -11,10 +11,11 @@ const routes = [
     component: Home
   },
   {
-    path: '/blocks',
+    path: '/blocks/:arg?',
     name: 'Blocks',
     component: Blocks
   },
+ 
   {
     path: '/accounts',
     name: 'Accounts',

@@ -24,7 +24,7 @@
       <td>{{addressFromValue}}</td>
       <td>{{addressToValue}}</td>
       <td>{{amountValue}}</td>
-      <td><router-link :to="'/' + this.blockNumberValue"> {{blockNumberValue}} </router-link></td>
+      <td><router-link :to="`/blocks/${blockNumberValue}`"> {{blockNumberValue}} </router-link></td>
     </tr>
     <tr>
       <td></td>

@@ -48,6 +48,7 @@ import axios from "axios";
 
 export default {
   name: "BlocksTable",
+  
   data() {
     return {
       blockNumberValue: "",
@@ -62,13 +63,18 @@ export default {
       argument: ""
     };
   },
+
+  
+
   methods: {
     searchBlock: function () {
-      let path = "http://localhost:3000/blocks/";
+      let path = "http://localhost:3000";
 
       if (this.argument === ''){
-        path += 'latest';
-      } else {
+        path += '/blocks/latest';
+      } else if (this.argument === '/blocks'){
+        path += '/blocks/latest';
+      }else {
         path += this.argument;
       }
 
@@ -85,6 +91,12 @@ export default {
         this.blockGasLimitValue = response.data.gasLimit;
       });
     },
+  },
+
+  mounted() {
+    this.argument = this.$route.fullPath; 
+    this.searchBlock();
+    console.log(this.argument);
   },
 
   inputArgument: function(arg){
