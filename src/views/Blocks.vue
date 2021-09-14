@@ -1,16 +1,16 @@
 <template>
   <Footer />
-  <Table />
+  <BlocksTable />
 </template>
 
 <script>
 import Footer from "../components/Footer.vue";
-import Table from "../components/Table.vue"
+import BlocksTable from "../components/BlocksTable.vue"
 export default {
   name: "Blocks",
   components: {
     Footer,
-    Table,
+    BlocksTable,
   },
 };
 </script>

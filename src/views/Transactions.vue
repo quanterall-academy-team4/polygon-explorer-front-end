@@ -1,19 +1,19 @@
 <template>
-  <h1>Transactions</h1>
   <Footer />
+  <TransactionsTable />
 </template>
 
 <script>
 import Footer from "../components/Footer.vue";
-
+import TransactionsTable from "../components/TransactionsTable.vue"
 export default {
-  name: 'Transactions',
+  name: "Transactions",
   components: {
-    Footer
-  }
-}
+    Footer,
+    TransactionsTable,
+  },
+};
 </script>
 
 <style>
-
 </style>
