@@ -4,7 +4,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
   />
 
-  <input type="text" placeholder="Search.." name="search" />
+  <input v-model="argument" placeholder="Search.." name="search" />
   <button v-on:click="searchBlock" type="submit">
     <i class="fa fa-search"></i>
   </button>
@@ -58,11 +58,23 @@ export default {
       blockSizeValue: "",
       blockGasUsedValue: "",
       blockGasLimitValue: "",
+
+      argument: ""
     };
   },
   methods: {
     searchBlock: function () {
-      axios.get("http://localhost:3000/blocks/latest").then((response) => {
+      let path = "http://localhost:3000/blocks/";
+
+      if (this.argument === ''){
+        path += 'latest';
+      } else {
+        path += this.argument;
+      }
+
+      console.log(path);
+
+      axios.get(path).then((response) => {
         this.blockNumberValue = response.data.number;
         this.blockTimeValue = response.data.timestamp;
         this.blockHashValue = response.data.hash;
@@ -74,6 +86,10 @@ export default {
       });
     },
   },
+
+  inputArgument: function(arg){
+    this.argument = arg;
+  }
 };
 </script>
 

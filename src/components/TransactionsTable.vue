@@ -4,7 +4,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
   />
 
-  <input type="text" placeholder="Search.." name="search" />
+  <input v-model="argument" type="text" placeholder="Search.." name="search" />
   <button v-on:click="searchTransaction" type="submit">
     <i class="fa fa-search"></i>
   </button>
@@ -12,19 +12,19 @@
   <table border="2">
     <tr>
       <th>Transaction Hash</th>
-      <th>Time</th>
+      <th>Nonce</th>
       <th>From</th>
       <th>To</th>
       <th>Value</th>
       <th>Block number</th>
     </tr>
     <tr>
-      <td>{{}}</td>
-      <td>{{}}</td>
-      <td>{{}}</td>
-      <td>{{}}</td>
-      <td>{{}}</td>
-      <td>{{}}</td>
+      <td>{{transactionHash}}</td>
+      <td>{{nonceValue}}</td>
+      <td>{{addressFromValue}}</td>
+      <td>{{addressToValue}}</td>
+      <td>{{amountValue}}</td>
+      <td><router-link :to="'/' + this.blockNumberValue"> {{blockNumberValue}} </router-link></td>
     </tr>
     <tr>
       <td></td>
@@ -44,20 +44,35 @@ export default {
   name: "TransactionsTable",
   data() {
     return {
-      
+      transactionHash: '',
+      nonceValue: '',
+      addressFromValue: '',
+      addressToValue: '',
+      amountValue: '',
+      blockNumberValue: '',
+
+      argument: ''
     };
   },
   methods: {
     searchTransaction: function () {
-      axios.get("http://localhost:3000/blocks/latest").then((response) => {
-        this.blockNumberValue = response.data.number;
-        /*this.blockTimeValue = response.data.timestamp;
-        this.blockHashValue = response.data.hash;
-        this.blockMinedByValue = response.data.miner;
-        this.blockDifficultyValue = response.data.difficulty;
-        this.blockSizeValue = response.data.size;
-        this.blockGasUsedValue = response.data.gasUsed;
-        this.blockGasLimitValue = response.data.gasLimit;*/
+      let path = "http://localhost:3000/transactions/";
+
+      if (this.argument === ''){
+        path += 'latest';
+      } else {
+        path += 'hash=' + this.argument;
+      }
+
+      console.log(path);
+
+      axios.get(path).then((response) => {
+        this.transactionHash = response.data.hash;
+        this.nonceValue = response.data.nonce;
+        this.addressFromValue = response.data.from;
+        this.addressToValue = response.data.to;
+        this.amountValue = response.data.value;
+        this.blockNumberValue = response.data.blockNumber;
       });
     },
   },
@@ -70,6 +85,10 @@ table {
   right: 25%;
   top: 35%;
   left: 25%;
+  display: inline-table;
+  table-layout: fixed;
+  word-wrap: break-word;
+  overflow: scroll;
 }
 table td {
   width: 500px;
