@@ -3,10 +3,10 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
   />
-  <form class="example" action="/action_page.php">
+  
     <input type="text" placeholder="Search.." name="search" />
-    <button type="submit"><i class="fa fa-search"></i></button>
-  </form>
+    <button v-on:click="searchBlock" type="submit"><i class="fa fa-search"></i></button>
+  
   <table border="2">
     <tr>
       <th>Number</th>
@@ -19,14 +19,14 @@
       <th>Gas Limit</th>
     </tr>
     <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <td> {{blockNumberValue}} </td>
+      <td> {{blockTimeValue}}</td>
+      <td>{{blockHashValue}}</td>
+      <td>{{blockMinedByValue}}</td>
+      <td>{{blockDifficultyValue}}</td>
+      <td>{{blockSizeValue}}</td>
+      <td>{{blockGasUsedValue}}</td>
+      <td>{{blockGasLimitValue}}</td>
     </tr>
     <tr>
       <td></td>
@@ -42,8 +42,37 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "Table",
+  data() {
+    return {
+      blockNumberValue: '',
+      blockTimeValue: '',
+      blockHashValue: '',
+      blockMinedByValue: '',
+      blockDifficultyValue: '',
+      blockSizeValue: '',
+      blockGasUsedValue: '',
+      blockGasLimitValue: ''
+    }
+  },
+  methods : {
+    searchBlock: function(){   
+      axios.get('http://localhost:3000/blocks/latest').then((response) => {
+      this.blockNumberValue = response.data.number;
+      this.blockTimeValue = response.data.timestamp;
+      this.blockHashValue = response.data.hash;
+      this.blockMinedByValue = response.data.miner;
+      this.blockDifficultyValue = response.data.difficulty;
+      this.blockSizeValue = response.data.size;
+      this.blockGasUsedValue = response.data.gasUsed;
+      this.blockGasLimitValue = response.data.gasLimit;
+    });
+  }
+  }
+  
 };
 </script>
 
