@@ -178,13 +178,13 @@ word-break: break-word;
 }
 
 input {
-  position: fixed;
+  position: absolute;
   left: 40%;
   top: 12%;
   width: 15%;
 }
 button {
-  position: fixed;
+  position: absolute;
   left: 55%;
   height: 21px;
   top: 12%;
