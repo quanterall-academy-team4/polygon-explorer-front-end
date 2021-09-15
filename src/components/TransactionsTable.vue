@@ -80,27 +80,7 @@ export default {
 </script>
 
 <style>
-table {
-  position: fixed;
-  right: 25%;
-  top: 35%;
-  left: 25%;
-  display: inline-table;
-  table-layout: fixed;
-  word-wrap: break-word;
-  overflow: scroll;
-}
-table td {
-  width: 500px;
-  height: 50px;
-}
-table tr {
-  width: 500px;
-}
 
-table th {
-  width: 500px;
-}
 
 input {
   position: fixed;

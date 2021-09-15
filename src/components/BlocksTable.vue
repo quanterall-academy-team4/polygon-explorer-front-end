@@ -20,16 +20,18 @@
       <th>Gas Used</th>
       <th>Gas Limit</th>
     </tr>
+    <template v-for="(block, index) in this.blocks" v-bind:key="index">
     <tr>
-      <td>{{ blockNumberValue }}</td>
-      <td>{{ blockTimeValue }}</td>
-      <td>{{ blockHashValue }}</td>
-      <td>{{ blockMinedByValue }}</td>
-      <td>{{ blockDifficultyValue }}</td>
-      <td>{{ blockSizeValue }}</td>
-      <td>{{ blockGasUsedValue }}</td>
-      <td>{{ blockGasLimitValue }}</td>
+      <td>{{ block.blockNumberValue }}</td>
+      <td>{{ block.blockTimeValue }}</td>
+      <td>{{ block.blockHashValue }}</td>
+      <td>{{ block.blockMinedByValue }}</td>
+      <td>{{ block.blockDifficultyValue }}</td>
+      <td>{{ block.blockSizeValue }}</td>
+      <td>{{ block.blockGasUsedValue }}</td>
+      <td>{{ block.blockGasLimitValue }}</td>
     </tr>
+    </template>
     <tr>
       <td></td>
       <td></td>
@@ -51,16 +53,32 @@ export default {
   
   data() {
     return {
-      blockNumberValue: "",
-      blockTimeValue: "",
-      blockHashValue: "",
-      blockMinedByValue: "",
-      blockDifficultyValue: "",
-      blockSizeValue: "",
-      blockGasUsedValue: "",
-      blockGasLimitValue: "",
+      blocks: [
+      {
+        blockNumberValue: "",
+        blockTimeValue: "",
+        blockHashValue: "",
+        blockMinedByValue: "",
+        blockDifficultyValue: "",
+        blockSizeValue: "",
+        blockGasUsedValue: "",
+        blockGasLimitValue: "",
+      },
+      ],
 
-      argument: ""
+      blockNumberValue: "",
+        blockTimeValue: "",
+        blockHashValue: "",
+        blockMinedByValue: "",
+        blockDifficultyValue: "",
+        blockSizeValue: "",
+        blockGasUsedValue: "",
+        blockGasLimitValue: "",
+      
+      
+
+      argument: "",
+      initialLoad: true
     };
   },
 
@@ -69,27 +87,63 @@ export default {
   methods: {
     searchBlock: function () {
       let path = "http://localhost:3000";
+      
 
-      if (this.argument === ''){
-        path += '/blocks/latest';
+      console.log(this.argument);
+
+       if (this.argument === ''){
+          path += '/blocks/latest';
       } else if (this.argument === '/blocks'){
         path += '/blocks/latest';
       }else {
-        path += this.argument;
+        path += '/blocks/' + this.argument;
+
+        const firstBlock = path.indexOf('blocks');
+        const secondBlock = path.lastIndexOf('blocks');
+
+        console.log(firstBlock);
+        console.log(secondBlock);
+
+        if (firstBlock !== secondBlock){
+          path = 'http://localhost:3000' + this.argument;
+        }
+
+        this.initialLoad = false;
       }
 
       console.log(path);
 
-      axios.get(path).then((response) => {
-        this.blockNumberValue = response.data.number;
-        this.blockTimeValue = response.data.timestamp;
-        this.blockHashValue = response.data.hash;
-        this.blockMinedByValue = response.data.miner;
-        this.blockDifficultyValue = response.data.difficulty;
-        this.blockSizeValue = response.data.size;
-        this.blockGasUsedValue = response.data.gasUsed;
-        this.blockGasLimitValue = response.data.gasLimit;
-      });
+      let iterations = 0;
+  
+
+      if (this.initialLoad === false){
+        iterations = 1;
+        this.blocks = []; // display searched block only
+      } else {
+        iterations = 25;
+        this.initialLoad = false;
+      }
+
+      // hardcoded value
+      for (let i = 0; i < iterations; i++){
+          axios.get(path).then((response) => {
+            
+            const block = {
+              blockNumberValue: response.data.number,
+              blockTimeValue: response.data.timestamp,
+              blockHashValue: response.data.hash,
+              blockMinedByValue: response.data.miner,
+              blockDifficultyValue: response.data.difficulty,
+              blockSizeValue: response.data.size,
+              blockGasUsedValue: response.data.gasUsed,
+              blockGasLimitValue: response.data.gasLimit
+            };
+
+            console.log(block);
+            this.blocks.push(block);
+          });
+          this.initialLoad = false;
+      }
     },
   },
 
@@ -99,29 +153,19 @@ export default {
     console.log(this.argument);
   },
 
-  inputArgument: function(arg){
-    this.argument = arg;
+  delayFunction: function(){
+    console.log('delay');
   }
 };
 </script>
 
 <style>
 table {
-  position: fixed;
-  right: 25%;
-  top: 35%;
-  left: 25%;
-}
-table td {
-  width: 500px;
-  height: 50px;
-}
-table tr {
-  width: 500px;
-}
-
-table th {
-  width: 500px;
+table-layout: fixed;
+margin-top: 8.5em;
+margin-left: 2.5em;
+width: 95%;
+word-break: break-word;
 }
 
 input {
