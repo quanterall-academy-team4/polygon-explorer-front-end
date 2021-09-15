@@ -88,14 +88,13 @@ export default {
     searchBlock: function () {
       let path = "http://localhost:3000";
       
-
       console.log(this.argument);
 
        if (this.argument === ''){
           path += '/blocks/latest';
       } else if (this.argument === '/blocks'){
         path += '/blocks/latest';
-      }else {
+      } else {
         path += '/blocks/' + this.argument;
 
         const firstBlock = path.indexOf('blocks');
@@ -114,7 +113,7 @@ export default {
       console.log(path);
 
       let iterations = 0;
-  
+     
 
       if (this.initialLoad === false){
         iterations = 1;
@@ -124,11 +123,16 @@ export default {
         this.initialLoad = false;
       }
 
+     
+
+      const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
+
       // hardcoded value
-      for (let i = 0; i < iterations; i++){
+      for (let i = 1; i <= iterations; i++){
           axios.get(path).then((response) => {
-            
-            const block = {
+            waitFor(500);
+
+              const block = {
               blockNumberValue: response.data.number,
               blockTimeValue: response.data.timestamp,
               blockHashValue: response.data.hash,
@@ -137,11 +141,16 @@ export default {
               blockSizeValue: response.data.size,
               blockGasUsedValue: response.data.gasUsed,
               blockGasLimitValue: response.data.gasLimit
-            };
+              }
 
             console.log(block);
             this.blocks.push(block);
-          });
+            
+            return waitFor(500).then(() => {
+              axios.get(path);
+            });
+            
+          })
           this.initialLoad = false;
       }
     },

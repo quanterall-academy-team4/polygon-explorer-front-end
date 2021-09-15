@@ -18,14 +18,16 @@
       <th>Value</th>
       <th>Block number</th>
     </tr>
+    <template v-for="(transaction, index) in this.transactions" v-bind:key="index">
     <tr>
-      <td>{{transactionHash}}</td>
-      <td>{{nonceValue}}</td>
-      <td>{{addressFromValue}}</td>
-      <td>{{addressToValue}}</td>
-      <td>{{amountValue}}</td>
-      <td><router-link :to="`/blocks/${blockNumberValue}`"> {{blockNumberValue}} </router-link></td>
+      <td>{{ transaction.transactionHash }}</td>
+      <td>{{ transaction.nonceValue }}</td>
+      <td>{{ transaction.addressFromValue }}</td>
+      <td>{{ transaction.addressToValue }}</td>
+      <td>{{ transaction.amountValue }}</td>
+      <td><router-link :to="`/blocks/${transaction.blockNumberValue}`">{{ transaction.blockNumberValue }}</router-link></td>
     </tr>
+    </template>
     <tr>
       <td></td>
       <td></td>
@@ -44,14 +46,20 @@ export default {
   name: "TransactionsTable",
   data() {
     return {
-      transactionHash: '',
-      nonceValue: '',
-      addressFromValue: '',
-      addressToValue: '',
-      amountValue: '',
-      blockNumberValue: '',
+      transactions: [
+      {
+        transactionHash: '',
+        nonceValue: '',
+        addressFromValue: '',
+        addressToValue: '',
+        amountValue: '',
+        blockNumberValue: '',
+      },
+      ],
+      
 
-      argument: ''
+      argument: '',
+      initialLoad: true
     };
   },
   methods: {
@@ -66,14 +74,30 @@ export default {
 
       console.log(path);
 
+      let iterations = 0;
+  
+
+      if (this.initialLoad === false){
+        iterations = 1;
+        this.transactions = []; // display searched block only
+      } else {
+        iterations = 25;
+        this.initialLoad = false;
+      }
+
+    for (let i = 0; i < iterations; i++){
       axios.get(path).then((response) => {
-        this.transactionHash = response.data.hash;
-        this.nonceValue = response.data.nonce;
-        this.addressFromValue = response.data.from;
-        this.addressToValue = response.data.to;
-        this.amountValue = response.data.value;
-        this.blockNumberValue = response.data.blockNumber;
+        const transaction = {
+          transactionHash: response.data.hash,
+          nonceValue: response.data.nonce,
+          addressFromValue: response.data.from,
+          addressToValue: response.data.to,
+          amountValue: response.data.value,
+          blockNumberValue: response.data.blockNumber,
+        };
+         this.transactions.push(transaction);
       });
+    }
     },
   },
 };
