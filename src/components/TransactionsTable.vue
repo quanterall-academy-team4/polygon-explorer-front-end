@@ -81,17 +81,4 @@ export default {
 
 <style>
 
-
-input {
-  position: fixed;
-  left: 40%;
-  top: 12%;
-  width: 15%;
-}
-button {
-  position: fixed;
-  left: 55%;
-  height: 21px;
-  top: 12%;
-}
 </style>
