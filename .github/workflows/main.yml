@@ -41,6 +41,6 @@ jobs:
         
       - name: Git clone latest branch to remote server
         run: |
-          cd /home/master/storage/gitclone/frontend,
-          git clone -b master --single-branch https://github.com/quanterall-academy-team4/polygon-explorer-front-end,
-          ls -la.
+          cd /home/master/storage/gitclone/frontend
+          git clone -b master --single-branch https://github.com/quanterall-academy-team4/polygon-explorer-front-end
+          ls -la
