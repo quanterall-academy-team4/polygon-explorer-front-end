@@ -34,6 +34,18 @@ jobs:
           
       - name: Configure correct known hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+        
+      - name: Login to Docker
+        run: |
+          docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Build Docker image
+        run: |
+          docker build . Dockerfile --tag ${{ secrets.DOCKER_USER }}/polygonexplorer-frontend:latest
+      
+      - name: Upload to Dockerhub
+        run: |
+          docker push ${{ secrets.DOCKER_USER }}/polygonexplorer-frontend
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
