@@ -41,5 +41,5 @@ jobs:
         
       - name: Rsync latest repository to remote server
         run: |
-          rsync -avz / ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/master/storage/gitclone/frontend
+          rsync -avz /home/runner/work/polygon-explorer-front-end/polygon-explorer-front-end ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/master/storage/gitclone/frontend
           ls -la
