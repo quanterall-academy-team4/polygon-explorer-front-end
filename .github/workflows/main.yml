@@ -41,7 +41,7 @@ jobs:
       
       - name: Build Docker image
         run: |
-          docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USER }}/polygonexplorer-frontend:latest
+          docker build . --file /home/runner/work/polygon-explorer-front-end/polygon-explorer-front-end/Dockerfile --tag ${{ secrets.DOCKER_USER }}/polygonexplorer-frontend:latest
       
       - name: Upload to Dockerhub
         run: |
