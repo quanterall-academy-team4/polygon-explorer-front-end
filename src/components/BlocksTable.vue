@@ -5,7 +5,7 @@
   />
 
   <input v-model="argument" placeholder="Search.." name="search" />
-  <button v-on:click="searchBlock" type="submit">
+  <button v-on:click="getLatestBlocks" type="submit">
     <i class="fa fa-search"></i>
   </button>
 
@@ -20,7 +20,7 @@
       <th>Gas Used</th>
       <th>Gas Limit</th>
     </tr>
-    <template v-for="(block, index) in this.blocks" v-bind:key="index">
+    <template v-for="block in latestBlocks" v-bind:key="block">
     <tr>
       <td>{{ block.blockNumberValue }}</td>
       <td>{{ block.blockTimeValue }}</td>
@@ -47,124 +47,56 @@
 
 <script>
 import axios from "axios";
+import { useStore } from "vuex";
+import { computed } from "vue";
 
 export default {
   name: "BlocksTable",
-  
-  data() {
-    return {
-      blocks: [
-      {
-        blockNumberValue: "",
-        blockTimeValue: "",
-        blockHashValue: "",
-        blockMinedByValue: "",
-        blockDifficultyValue: "",
-        blockSizeValue: "",
-        blockGasUsedValue: "",
-        blockGasLimitValue: "",
-      },
-      ],
 
-      blockNumberValue: "",
-        blockTimeValue: "",
-        blockHashValue: "",
-        blockMinedByValue: "",
-        blockDifficultyValue: "",
-        blockSizeValue: "",
-        blockGasUsedValue: "",
-        blockGasLimitValue: "",
-      
-      
+  setup() {
+      const store = useStore();
+      const latestBlocks = computed(() => store.state.latestBlocks);
 
-      argument: "",
-      initialLoad: true
-    };
-  },
-
-  
-
-  methods: {
-    searchBlock: function () {
-      let path = "http://localhost:3000";
-      
-      console.log(this.argument);
-
-       if (this.argument === ''){
-          path += '/blocks/latest';
-      } else if (this.argument === '/blocks'){
-        path += '/blocks/latest';
-      } else {
-        path += '/blocks/' + this.argument;
-
-        const firstBlock = path.indexOf('blocks');
-        const secondBlock = path.lastIndexOf('blocks');
-
-        console.log(firstBlock);
-        console.log(secondBlock);
-
-        if (firstBlock !== secondBlock){
-          path = 'http://localhost:3000' + this.argument;
-        }
-
-        this.initialLoad = false;
-      }
-
-      console.log(path);
-
-      let iterations = 0;
-     
-
-      if (this.initialLoad === false){
-        iterations = 1;
-        this.blocks = []; // display searched block only
-      } else {
-        iterations = 25;
-        this.initialLoad = false;
-      }
-
-     
-
-      const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
+      async function getLatestBlocks() {    
+       let latestBlocksFetched = [];
+        
+       let path = "http://localhost:3000/blocks/latest";
 
       // hardcoded value
-      for (let i = 1; i <= iterations; i++){
-          axios.get(path).then((response) => {
-            waitFor(500);
+       for (let i = 1; i <= 25; i++){
+        const response = await axios.get(path);
+        const block = {
+          blockId: i,
+          blockNumberValue: response.data.number,
+          blockTimeValue: response.data.timestamp,
+          blockHashValue: response.data.hash,
+          blockMinedByValue: response.data.miner,
+          blockDifficultyValue: response.data.difficulty,
+          blockSizeValue: response.data.size,
+          blockGasUsedValue: response.data.gasUsed,
+          blockGasLimitValue: response.data.gasLimit
+        };
 
-              const block = {
-              blockNumberValue: response.data.number,
-              blockTimeValue: response.data.timestamp,
-              blockHashValue: response.data.hash,
-              blockMinedByValue: response.data.miner,
-              blockDifficultyValue: response.data.difficulty,
-              blockSizeValue: response.data.size,
-              blockGasUsedValue: response.data.gasUsed,
-              blockGasLimitValue: response.data.gasLimit
-              }
+        latestBlocksFetched.push(block);  
+        console.log(latestBlocksFetched);   
+        this.initialLoad = false;
+      } 
 
-            console.log(block);
-            this.blocks.push(block);
-            
-            return waitFor(500).then(() => {
-              axios.get(path);
-            });
-            
-          })
-          this.initialLoad = false;
+        store.commit("getLatestBlocks", latestBlocksFetched);
+        console.log("state");
+        console.log(latestBlocks.value);
       }
-    },
+
+      // expose to template
+      return { latestBlocks, getLatestBlocks };
   },
+  
 
   mounted() {
     this.argument = this.$route.fullPath; 
-    this.searchBlock();
     console.log(this.argument);
   },
 
-  delayFunction: function(){
-    console.log('delay');
-  }
 };
 </script>
 
