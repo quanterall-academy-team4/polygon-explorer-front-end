@@ -1,5 +1,5 @@
 <template>
-  <div class="topnav">
+  <div class="topnav" id="navbar">
     <router-link
       style="
         color: white;
