@@ -57,9 +57,10 @@ export default {
       const store = useStore();
       const latestBlocks = computed(() => store.state.latestBlocks);
 
-      async function getLatestBlocks() {    
+     const getLatestBlocks = async () => {    
+       
        let latestBlocksFetched = [];
-        
+       store.commit("getLatestBlocks", latestBlocksFetched);
        let path = "http://localhost:3000/blocks/latest";
 
       // hardcoded value
@@ -79,7 +80,7 @@ export default {
 
         latestBlocksFetched.push(block);  
         console.log(latestBlocksFetched);   
-        this.initialLoad = false;
+       
       } 
 
         store.commit("getLatestBlocks", latestBlocksFetched);
