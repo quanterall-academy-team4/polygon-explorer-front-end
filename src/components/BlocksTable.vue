@@ -61,27 +61,37 @@ export default {
        
        let latestBlocksFetched = [];
        store.commit("getLatestBlocks", latestBlocksFetched);
-       let path = "http://localhost:3000/blocks/latest";
 
-      // hardcoded value
-       for (let i = 1; i <= 25; i++){
-        const response = await axios.get(path);
-        const block = {
-          blockId: i,
-          blockNumberValue: response.data.number,
-          blockTimeValue: response.data.timestamp,
-          blockHashValue: response.data.hash,
-          blockMinedByValue: response.data.miner,
-          blockDifficultyValue: response.data.difficulty,
-          blockSizeValue: response.data.size,
-          blockGasUsedValue: response.data.gasUsed,
-          blockGasLimitValue: response.data.gasLimit
+       let blockResponse = await axios.get("http://localhost:3000/blocks/latest");
+       let latestBlock = {
+          blockId: 0,
+          blockNumberValue: blockResponse.data.number,
+          blockTimeValue: blockResponse.data.timestamp,
+          blockHashValue: blockResponse.data.hash,
+          blockMinedByValue: blockResponse.data.miner,
+          blockDifficultyValue: blockResponse.data.difficulty,
+          blockSizeValue: blockResponse.data.size,
+          blockGasUsedValue: blockResponse.data.gasUsed,
+          blockGasLimitValue: blockResponse.data.gasLimit
         };
 
-        latestBlocksFetched.push(block);  
-        console.log(latestBlocksFetched);   
-       
-      } 
+        for (let i = latestBlock.blockNumberValue - 1; i >= latestBlock.blockNumberValue - 20; i--){
+          blockResponse = await axios.get("http://localhost:3000/blocks/identifier/" + i);
+
+          const currentBlock = {
+            blockId: i,
+            blockNumberValue: blockResponse.data.number,
+            blockTimeValue: blockResponse.data.timestamp,
+            blockHashValue: blockResponse.data.hash,
+            blockMinedByValue: blockResponse.data.miner,
+            blockDifficultyValue: blockResponse.data.difficulty,
+            blockSizeValue: blockResponse.data.size,
+            blockGasUsedValue: blockResponse.data.gasUsed,
+            blockGasLimitValue: blockResponse.data.gasLimit
+          };
+
+          latestBlocksFetched.push(currentBlock); 
+        }
 
         store.commit("getLatestBlocks", latestBlocksFetched);
         console.log("state");
