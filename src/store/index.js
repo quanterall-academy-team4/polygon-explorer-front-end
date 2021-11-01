@@ -8,6 +8,7 @@ const state = {
 const mutations = {
     getLatestBlocks(state, latestBlocksFetched){
         state.latestBlocks = latestBlocksFetched;
+        console.log("Mutation call: " + state.latestBlocks);
     },
 
     getLatestTransactions(state, latestTransactionsFetched){

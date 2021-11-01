@@ -48,19 +48,20 @@
 <script>
 import axios from "axios";
 import { useStore } from "vuex";
-import { computed } from "vue";
+import { computed, onBeforeMount } from "vue";
 
 export default {
   name: "BlocksTable",
 
   setup() {
       const store = useStore();
+      console.log("store: " + store.state.latestBlocks.size);
       const latestBlocks = computed(() => store.state.latestBlocks);
+      //const latestBlocks = computed(() => store.state.latestBlocks);
+      console.log("latestblocks initially: " + latestBlocks.value);
 
      const getLatestBlocks = async () => {    
-       
        let latestBlocksFetched = [];
-       store.commit("getLatestBlocks", latestBlocksFetched);
 
        let blockResponse = await axios.get("http://localhost:3000/blocks/latest");
        let latestBlock = {
@@ -94,19 +95,20 @@ export default {
         }
 
         store.commit("getLatestBlocks", latestBlocksFetched);
-        console.log("state");
-        console.log(latestBlocks.value);
-      }
+      };
+
+      onBeforeMount(() => {
+        getLatestBlocks();
+      });
+      console.log(getLatestBlocks);
 
       // expose to template
       return { latestBlocks, getLatestBlocks };
+
+    
   },
   
-
-  mounted() {
-    this.argument = this.$route.fullPath; 
-    console.log(this.argument);
-  },
+  
 
 };
 </script>
