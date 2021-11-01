@@ -5,7 +5,7 @@
   />
 
   <input v-model="argument" placeholder="Search.." name="search" />
-  <button v-on:click="getLatestBlocks" type="submit">
+  <button v-on:click="getSingleBlock(store, argument)" type="submit">
     <i class="fa fa-search"></i>
   </button>
 
@@ -19,6 +19,16 @@
       <th>Size</th>
       <th>Gas Used</th>
       <th>Gas Limit</th>
+    </tr>
+    <tr style="font-color:green">
+      <td>KUR</td>
+      <td>{{ latestBlockSearched.blockTimeValue }}</td>
+      <td>{{ latestBlockSearched.blockHashValue }}</td>
+      <td>{{ latestBlockSearched.blockMinedByValue }}</td>
+      <td>{{ latestBlockSearched.blockDifficultyValue }}</td>
+      <td>{{ latestBlockSearched.blockSizeValue }}</td>
+      <td>{{ latestBlockSearched.blockGasUsedValue }}</td>
+      <td>{{ latestBlockSearched.blockGasLimitValue }}</td>
     </tr>
     <template v-for="block in latestBlocks" v-bind:key="block">
     <tr>
@@ -50,17 +60,18 @@ import axios from "axios";
 import { useStore } from "vuex";
 import { computed, onBeforeMount } from "vue";
 
+import { getSingleBlock } from "../services/blocks.js";
+
 export default {
   name: "BlocksTable",
 
   setup() {
-      const store = useStore();
-      console.log("store: " + store.state.latestBlocks.size);
-      const latestBlocks = computed(() => store.state.latestBlocks);
-      //const latestBlocks = computed(() => store.state.latestBlocks);
-      console.log("latestblocks initially: " + latestBlocks.value);
+     const store = useStore();
+     const latestBlocks = computed(() => store.state.latestBlocks);
+     const latestBlockSearched = computed(() => store.state.latestBlockSearched);
 
-     const getLatestBlocks = async () => {    
+
+      const getLatestBlocks = async () => {    
        let latestBlocksFetched = [];
 
        let blockResponse = await axios.get("http://localhost:3000/blocks/latest");
@@ -100,16 +111,10 @@ export default {
       onBeforeMount(() => {
         getLatestBlocks();
       });
-      console.log(getLatestBlocks);
 
       // expose to template
-      return { latestBlocks, getLatestBlocks };
-
-    
+      return { store, latestBlockSearched, latestBlocks, getLatestBlocks, getSingleBlock};
   },
-  
-  
-
 };
 </script>
 
@@ -120,6 +125,10 @@ margin-top: 8.5em;
 margin-left: 2.5em;
 width: 95%;
 word-break: break-word;
+}
+
+tr {
+font-style:color-green;
 }
 
 input {

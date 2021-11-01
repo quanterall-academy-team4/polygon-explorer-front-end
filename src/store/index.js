@@ -2,6 +2,8 @@ import { createStore } from "vuex";
 
 const state = {
     latestBlocks: [],
+    latestBlockSearched: Object,
+
     latestTransactions: []
 };
 
@@ -13,6 +15,10 @@ const mutations = {
 
     getLatestTransactions(state, latestTransactionsFetched){
         state.latestTransactions = latestTransactionsFetched; 
+    },
+
+    getSingleBlock(state, block){
+        state.latestBlockSearched = block;
     }
 };
 
